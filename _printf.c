@@ -1,47 +1,53 @@
 #include "main.h"
-
+#include<stdarg.h>
+#include<stdlib.h>
 /**
- * _printf -formatted output conversion and print data.
- * @format: input string.
+ * print_all - check the type of format
  *
- *return: number of chars printed .
+ * @c: type we want print them
+ * @arg: argument
+ * @len: len returned
+ *
+ * Return: void
+ */
+void print_all(char c, va_list arg, int *len)
+{
+	if (c == '%')
+		*len += _putchar('%');
+	else if (c == 'c')
+		*len += _putchar(va_arg(arg, int));
+	else if (c == 's')
+		*len += _putstr(va_arg(arg, char *));
+}
+/**
+ * _printf - code our printf
+ *
+ * @format: type we want print them
+ *
+ * Return: lenght
  */
 int _printf(const char *format, ...)
 {
-	return (0);
-	unsigned int i = 0, len = 0, ibuf = 0;
-	va_list arguments;
-	int (*function)(va_list, char *, unsigned int);
-	char *buffer;
+	va_list arg;
+	int i;
+	int len = 0;
 
-	va_start(arguments, format);
-	buffer = malloc(sizeof(char) * 1024);
-	while (format && format[i])
+	if (format == NULL)
+		return (-1);
+	va_start(arg, format);
+	for (i = 0; format[i] != '\0'; i++)
 	{
 		if (format[i] == '%')
 		{
-			if (format[i + 1] == '%')
-				handl_buf(buffer, format[i], ibuf), len++;
-			else if (format[i + 1] == '\0')
-			{
-				if (ibuf != 0)
-					print_buf(buffer, ibuf);
-				free(buffer);
-				return (-1);
-			}
-			else
-			{
-				function = get_print_func(format, i + 1);
-				len += function(arguments, buffer, ibuf);
-			}
 			i++;
+			if (format[i] == '\0')
+				return (-1);
+			else if (format[i])
+				print_all(format[i], arg, &len);
 		}
 		else
-			handl_buf(buffer, format[i], ibuf), len++;
-		i++, ibuf = len;
-		while (ibuf > 1024)
-			ibuf -= 1024;
+			len += _putchar(format[i]);
 	}
-	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+	va_end(arg);
 	return (len);
 }
