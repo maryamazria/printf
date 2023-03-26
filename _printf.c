@@ -1,53 +1,42 @@
+#include <stdarg.h>
+#include <stdlib.h>
 #include "main.h"
-#include<stdarg.h>
-#include<stdlib.h>
 /**
- * print_all - check the type of format
- *
- * @c: type we want print them
- * @arg: argument
- * @len: len returned
- *
- * Return: void
- */
-void print_all(char c, va_list arg, int *len)
-{
-	if (c == '%')
-		*len += _putchar('%');
-	else if (c == 'c')
-		*len += _putchar(va_arg(arg, int));
-	else if (c == 's')
-		*len += _putstr(va_arg(arg, char *));
-}
-/**
- * _printf - code our printf
- *
- * @format: type we want print them
- *
- * Return: lenght
- */
+  * _printf - printf function
+  * @format: tring format
+  * Return: length of string
+  */
 int _printf(const char *format, ...)
 {
-	va_list arg;
-	int i;
-	int len = 0;
+	va_list ptr;
+	int i = 0, sum = 0;
 
 	if (format == NULL)
 		return (-1);
-	va_start(arg, format);
-	for (i = 0; format[i] != '\0'; i++)
+	va_start(ptr, format);
+	while (format[i] != '\0')
 	{
+		if (format[i] != '%')
+		{
+			_putchar(format[i]), sum++, i++;
+			continue;
+		}
 		if (format[i] == '%')
 		{
 			i++;
-			if (format[i] == '\0')
+			if (format[i] != '\0')
+			{
+				sum += printer(format[i], ptr);
+			}
+			else
+			{
+				va_end(ptr);
 				return (-1);
-			else if (format[i])
-				print_all(format[i], arg, &len);
+			}
+
 		}
-		else
-			len += _putchar(format[i]);
+		i++;
 	}
-	va_end(arg);
-	return (len);
+	va_end(ptr);
+	return (sum);
 }
