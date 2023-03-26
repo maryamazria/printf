@@ -1,10 +1,8 @@
-#ifndef MAIN_H
-#define MAIN_H
-#include<stdarg.h>
-
-int _printf(const char *format, ...);
+#ifndef PRINT_H
+#define PRINT_H
+#include <stdarg.h>
 int _putchar(char c);
-int _putstr(char *str);
-void print_all(char c, va_list arg, int *len);
-
+int _printf(const char *format, ...);
+int print_str(char *);
+int printer(char c, va_list ptr);
 #endif
