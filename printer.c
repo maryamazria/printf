@@ -13,13 +13,13 @@ int printer(char c, va_list ptr)
 	switch (c)
 	{
 		case '%':
-			_putchar('%'), sum++;
+			putchar('%'), sum++;
 		break;
 		case 'c':
 			_putchar(va_arg(ptr, int)), sum++;
 		break;
 		case 's':
-			sum += print_str(va_arg(ptr, char *));
+			sum += printer(va_arg(ptr, char *));
 		break;
 		default:
 			_putchar('%'), _putchar(c), sum += 2;
