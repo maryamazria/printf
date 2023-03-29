@@ -1,42 +1,45 @@
+#include <stdio.h>
 #include <stdarg.h>
-#include <stdlib.h>
-#include "main.h"
-/**
-  * _printf - printf function
-  * @format: tring format
-  * Return: length of string
-  */
-int _printf(const char *format, ...)
-{
-	va_list ptr;
-	int i = 0, sum = 0;
 
-	if (format == NULL)
-		return (-1);
-	va_start(ptr, format);
-	while (format[i] != '\0')
-	{
-		if (format[i] != '%')
-		{
-			_putchar(format[i]), sum++, i++;
-			continue;
-		}
-		if (format[i] == '%')
-		{
-			i++;
-			if (format[i] != '\0')
-			{
-				sum += printer(format[i], ptr);
-			}
-			else
-			{
-				va_end(ptr);
-				return (-1);
-			}
+int _printf(const char *format, ...) {
+    va_list arg_list;
+    int printed_chars = 0;
 
-		}
-		i++;
-	}
-	va_end(ptr);
-	return (sum);
+    va_start(arg_list, format);
+
+    while (*format) {
+        if (*format == '%') {
+            format++;
+            switch (*format) {
+                case 'c': {
+                    int c = va_arg(arg_list, int);
+                    putchar(c);
+                    printed_chars++;
+                    break;
+                }
+                case 's': {
+                    char *s = va_arg(arg_list, char *);
+                    fputs(s, stdout);
+                    printed_chars += strlen(s);
+                    break;
+                }
+                case '%': {
+                    putchar('%');
+                    printed_chars++;
+                    break;
+                }
+                default:
+                    break;
+            }
+        } else {
+            putchar(*format);
+            printed_chars++;
+        }
+        format++;
+    }
+
+    va_end(arg_list);
+
+    return printed_chars;
 }
+
