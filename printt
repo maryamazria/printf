@@ -1,0 +1,9 @@
+#include <stdio.h>
+#include "main.h"
+int main(void)
+{
+	unsigned int i = 7, b = 2;
+	char *u = _convert(i, b);
+	printf("%s\n", u);
+	_printf("%b\n",7);
+}

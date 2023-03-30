@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "main.h"
 
 void print_buffer(char buffer[], int *buff_ind);
@@ -63,4 +64,47 @@ void print_buffer(char buffer[], int *buff_ind)
 		write(1, &buffer[0], *buff_ind);
 
 	*buff_ind = 0;
+=======
+#include <stdarg.h>
+#include <stdlib.h>
+#include "main.h"
+/**
+  * _printf - printf function
+  * @format: tring format
+  * Return: length of string
+  */
+int _printf(const char *format, ...)
+{
+	va_list ptr;
+	int i = 0, sum = 0;
+
+	if (format == NULL)
+		return (-1);
+	va_start(ptr, format);
+	while (format[i] != '\0')
+	{
+		if (format[i] != '%')
+		{
+			_putchar(format[i]), sum++, i++;
+			continue;
+		}
+		if (format[i] == '%')
+		{
+			i++;
+			if (format[i] != '\0')
+			{
+				sum += printer(format[i], ptr);
+			}
+			else
+			{
+				va_end(ptr);
+				return (-1);
+			}
+
+		}
+		i++;
+	}
+	va_end(ptr);
+	return (sum);
+>>>>>>> 32858ba9378dd6f3deb85d496aade0a100a950d3
 }
